@@ -107,3 +107,6 @@ class PersonTest(TestCase):
         #It should have image and summary empty
         self.assertIn('image',response_as_json['result'])
         self.assertIn('summary',response_as_json['result'])
+        #yes it should be empty
+        self.assertEquals(len(response_as_json['result']['image']), 0)
+        self.assertEquals(len(response_as_json['result']['summary']), 0)
