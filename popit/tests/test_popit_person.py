@@ -98,13 +98,6 @@ class PersonTest(TestCase):
         #     "name": "Joe Bloggs",
         #     "id": "522e2e23a68f91773a000001"
         # }
-        # if I cannot use self.client
-        # then I should use this
-        # import urllib
-        # f = urllib.open(person.popit_url)
-        # self.assertEquals(f.code, 200)
-        # response_as_json = json.loads(f.read())
-        # from then on it should go as usual
 
         self.assertEquals(response_as_json['result']['id'], person_id)
         self.assertEquals(response_as_json['result']['name'], person.name)

@@ -136,7 +136,10 @@ class Person(PopItDocument):
     def post_to_the_api(self):
         api = self.api_instance.api_client(self.api_collection_name)
         response = api.post({"name":self.name})
-        self.popit_url = self.api_instance.url+"/"+self.api_collection_name+"/"+response["result"]["id"]
+        self.popit_url = self.api_instance.url +"/%(collection_name)s/%(id)s"%{
+            'collection_name':self.api_collection_name,
+            'id':response['result']['id']
+        }
         self.save()
 
 
