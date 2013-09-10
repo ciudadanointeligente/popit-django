@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
@@ -95,9 +96,14 @@ class PersonTest(TestCase):
         # The popit-api responds something like this
         # {
         #   "result": {
-        #     "name": "Joe Bloggs",
-        #     "id": "522e2e23a68f91773a000001"
+        #     "name": "Juan Perez",
+        #     "id": "522e2e23a68f91773a000001",
+        #     "image": "http://url/to/the/image.png",
+        #     "summary": "Juan Perez es un desarrollador de la fundación ciudadano inteligente que programa en ruby"
         # }
 
         self.assertEquals(response_as_json['result']['id'], person_id)
         self.assertEquals(response_as_json['result']['name'], person.name)
+        #It should have image and summary empty
+        self.assertIn('image',response_as_json['result'])
+        self.assertIn('summary',response_as_json['result'])
