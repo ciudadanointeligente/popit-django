@@ -4,9 +4,9 @@ from django.db import IntegrityError
 from django.core.management import call_command
 
 from popit.models import ApiInstance, Person
-from popit.tests import instance_helpers
+from popit.tests.instance_helpers import PopitTestCaseMixin
 
-class ApiInstanceTest(TestCase):
+class ApiInstanceTest(TestCase, PopitTestCaseMixin):
     def test_url_constraints(self):
         """
         Test that url is required and unique
@@ -33,9 +33,9 @@ class ApiInstanceTest(TestCase):
         """
     
         # create the instance, delete contents and load test fixture
-        instance_helpers.delete_api_database()
-        instance_helpers.load_test_data()
-        instance = ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        self.delete_api_database()
+        self.load_test_data()
+        instance = ApiInstance.objects.create(url=self.get_api_url())
         self.assertTrue(instance)
     
         # Tell the instance to sync data
@@ -51,8 +51,8 @@ class ApiInstanceTest(TestCase):
 
         # update the api to use a different fixture and check that the update is
         # applied
-        instance_helpers.delete_api_database()
-        instance_helpers.load_test_data('rename_joe_bloggs')
+        self.delete_api_database()
+        self.load_test_data('rename_joe_bloggs')
         instance.fetch_all_from_api()
         renamed = Person.objects.get(pk=person.id)
         self.assertEqual(renamed.name, 'Josh Blaggs')
@@ -61,9 +61,9 @@ class ApiInstanceTest(TestCase):
     def test_retrieve_all_management_command(self):
         
         # create the instance, delete contents and load test fixture
-        instance_helpers.delete_api_database()
-        instance_helpers.load_test_data()
-        ApiInstance.objects.create(url=instance_helpers.get_api_url())
+        self.delete_api_database()
+        self.load_test_data()
+        ApiInstance.objects.create(url=self.get_api_url())
         
         # call the management command to retrieve all
         call_command('popit_retrieve_all')
