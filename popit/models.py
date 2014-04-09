@@ -163,9 +163,15 @@ class Person(PopItDocument):
 
     @classmethod
     def extract_settable(cls, doc):
+        def get_or_empty(key):
+            value = doc.get(key, '')
+            if value:
+                return value
+            return ''
+            
         return {
             'name': doc['name'],
-            'summary': doc.get('summary', ''),
-            'image': doc.get('image', '')
+            'summary': get_or_empty('summary'),
+            'image': get_or_empty('image')
         }
 

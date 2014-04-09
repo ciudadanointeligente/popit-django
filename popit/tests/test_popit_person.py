@@ -68,3 +68,20 @@ class PersonTest(TestCase):
         # (implying that it is from a different instance)
         self.assertRaises(ValidationError, Person.objects.create, api_instance=instance, name="Bob", popit_url='http://other.com/api/person/123')
         
+
+    def test_person_with_null_summary(self):
+        """A person can have null summary in popit"""
+
+        instance = ApiInstance(url="http://foo.com/api")
+        instance.save()
+
+        doc = {
+            'id':'joe',
+            'name':'Joe',
+            'summary':None,
+            'popit_url': u'http://foo.com/api/persons/joe'
+        }
+        person = Person.update_from_api_results(instance, doc)
+        self.assertTrue(person)
+        self.assertEqual(person.summary, '')
+
